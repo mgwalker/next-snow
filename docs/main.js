@@ -108,6 +108,8 @@ const updateDOMWithLocation = async (latitude, longitude) => {
     document.getElementById("name").innerText = name;
     document.getElementById("forecast").innerText = forecast;
     makeItSnow();
+  } else {
+    document.getElementById("name").innerText = "No snow in the forecast 😢";
   }
 };
 
