@@ -1,0 +1,69 @@
+body {
+  font-family: sans-serif;
+}
+
+body.day {
+  background-color: skyblue;
+}
+
+body.night {
+  background-color: #16162a;
+}
+
+#container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#name {
+  font-size: 64px;
+  letter-spacing: 6px;
+  font-weight: bold;
+  text-align: center;
+  padding: 0 30px;
+  z-index: 2;
+}
+
+body.day #name {
+  text-shadow: -1px -1px 0px black, -1px 1px 0px black, 1px -1px 0px black,
+    1px 1px 0px black;
+  text-shadow: -2px -2px 0px black, -2px 2px 0px black, 2px -2px 0px black,
+    2px 2px 0px black;
+  color: white;
+}
+
+body.night #name {
+  text-shadow: -1px -1px 0px white, -1px 1px 0px white, 1px -1px 0px white,
+    1px 1px 0px white;
+  text-shadow: -2px -2px 0px white, -2px 2px 0px white, 2px -2px 0px white,
+    2px 2px 0px white;
+  color: black;
+}
+
+#forecast {
+  border-radius: 5px;
+  font-size: 24px;
+  margin-top: 10px;
+  max-width: 60vw;
+  padding: 10px;
+  text-align: center;
+  z-index: 2;
+}
+
+body.day #forecast {
+  background-color: black;
+  color: white;
+}
+
+body.night #forecast {
+  background-color: white;
+  color: black;
+}
