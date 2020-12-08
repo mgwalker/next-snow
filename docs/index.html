@@ -6,10 +6,18 @@
     <link rel="stylesheet" type="text/css" href="main.css" />
   </head>
   <body class="">
-    <div id="container">
-      <div id="name"></div>
-      <div id="forecast"></div>
+    <div id="container" style="display: none">
+      <div id="loading" v-if="loading"><img src="flake2.svg"> loading</div>
+      <div id="name">{{ day }}</div>
+      <div id="forecast">{{ forecast }}</div>
+
+      <div
+        v-for="(snowflake, index) in snowflakes"
+        v-bind:key="index"
+        v-bind:style="snowflake.style"></div>
+      </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

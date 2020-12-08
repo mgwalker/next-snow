@@ -23,6 +23,7 @@ body.night {
   align-items: center;
 }
 
+#loading,
 #name {
   font-size: 64px;
   letter-spacing: 6px;
@@ -30,6 +31,20 @@ body.night {
   text-align: center;
   padding: 0 30px;
   z-index: 2;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+#loading img {
+  animation: 3s spin ease-in-out 0s infinite;
+  max-height: 64px;
 }
 
 body.day #name {
