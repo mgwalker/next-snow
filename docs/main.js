@@ -1,8 +1,11 @@
 const appState = {
   day: null,
   forecast: null,
+  getZip: false,
   loading: false,
   snowflakes: [],
+  zip: "",
+  zipEntered: () => {},
 };
 
 const getNextSnow = async (forecasts) => {
@@ -44,7 +47,7 @@ const makeItSnow = () => {
       speed: 8 + Math.floor(Math.random() * 16),
       style: {
         position: "fixed",
-        top: `${top}px`,
+        top: `${-size}px`,
         left: `${left}px`,
         width: `${size}px`,
         height: `${size}px`,
@@ -62,14 +65,14 @@ const makeItSnow = () => {
     const { innerHeight } = window;
 
     appState.snowflakes.forEach((flake, i) => {
-      const top = flake.top;
+      const { top } = flake;
       if (top > innerHeight) {
         appState.snowflakes.splice(i, 1, createSnowflake());
         return;
       }
 
-      flake.top += flake.speed;
-      flake.style.top = `${flake.top}px`;
+      flake.top += flake.speed; // eslint-disable-line no-param-reassign
+      flake.style.top = `${flake.top}px`; // eslint-disable-line no-param-reassign
     });
   };
 
@@ -86,7 +89,7 @@ const updateDOMWithLocation = async (latitude, longitude) => {
   const nextSnow = await getForecastURL(latitude, longitude)
     .then(getForecast)
     .then(getNextSnow);
-  ``;
+
   appState.loading = false;
 
   if (nextSnow !== false) {
@@ -122,7 +125,9 @@ const getLocation = () => {
 
       switch (code) {
         case 1:
-          appState.day = "location denied by user";
+          navigator.serviceWorker.register("worker.js").then(() => {
+            appState.getZip = true;
+          });
           break;
         case 2:
         case 3:
@@ -136,11 +141,39 @@ const getLocation = () => {
   );
 };
 
+const getCoordsForZip = async (zip) => {
+  const zips = await (await fetch("zips.json")).json();
+
+  const coords = zips[zip];
+  if (coords) {
+    updateDOMWithLocation(coords.latitude, coords.longitude);
+  } else {
+    appState.getZip = true;
+    appState.loading = false;
+  }
+};
+
+const handleZipSubmit = (e) => {
+  e.preventDefault();
+  if (/^\d{5}$/.test(appState.zip)) {
+    appState.getZip = false;
+    appState.loading = true;
+    getCoordsForZip(appState.zip);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
+  appState.zipEntered = handleZipSubmit;
+
+  // We don't need to keep a reference to the Vue app object, but eslint
+  // doesn't want us to use constructors for side-effects (which is reasonable,
+  // but here we are...)
+  // eslint-disable-next-line no-new
   new Vue({
     el: "#container",
     data: appState,
   });
+
   document.getElementById("container").removeAttribute("style");
   getLocation();
 });

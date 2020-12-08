@@ -11,6 +11,14 @@
       <div id="name">{{ day }}</div>
       <div id="forecast">{{ forecast }}</div>
 
+      <div id="zip-container" v-if="getZip">
+        <form @submit="zipEntered">
+          <label>ZIP code
+          <input type="text" pattern="[0-9]{5}" v-model="zip" /></label>
+          <button type="submit" @click="zipEntered">When is the snow?</button>
+        </form>
+      </div>
+
       <div
         v-for="(snowflake, index) in snowflakes"
         v-bind:key="index"

@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@18f/18f-eslint": "^1.2.5",
     "prettier": "^2.2.1"
   },
   "scripts": {
