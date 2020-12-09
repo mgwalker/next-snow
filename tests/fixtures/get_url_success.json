@@ -1,0 +1,94 @@
+{
+  "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+          "@version": "1.1",
+          "wx": "https://api.weather.gov/ontology#",
+          "s": "https://schema.org/",
+          "geo": "http://www.opengis.net/ont/geosparql#",
+          "unit": "http://codes.wmo.int/common/unit/",
+          "@vocab": "https://api.weather.gov/ontology#",
+          "geometry": {
+              "@id": "s:GeoCoordinates",
+              "@type": "geo:wktLiteral"
+          },
+          "city": "s:addressLocality",
+          "state": "s:addressRegion",
+          "distance": {
+              "@id": "s:Distance",
+              "@type": "s:QuantitativeValue"
+          },
+          "bearing": {
+              "@type": "s:QuantitativeValue"
+          },
+          "value": {
+              "@id": "s:value"
+          },
+          "unitCode": {
+              "@id": "s:unitCode",
+              "@type": "@id"
+          },
+          "forecastOffice": {
+              "@type": "@id"
+          },
+          "forecastGridData": {
+              "@type": "@id"
+          },
+          "publicZone": {
+              "@type": "@id"
+          },
+          "county": {
+              "@type": "@id"
+          }
+      }
+  ],
+  "id": "https://api.weather.gov/points/35,-80",
+  "type": "Feature",
+  "geometry": {
+      "type": "Point",
+      "coordinates": [
+          -80,
+          35
+      ]
+  },
+  "properties": {
+      "@id": "https://api.weather.gov/points/35,-80",
+      "@type": "wx:Point",
+      "cwa": "RAH",
+      "forecastOffice": "https://api.weather.gov/offices/RAH",
+      "gridId": "RAH",
+      "gridX": 28,
+      "gridY": 16,
+      "forecast": "https://forecast.url",
+      "forecastHourly": "https://api.weather.gov/gridpoints/RAH/28,16/forecast/hourly",
+      "forecastGridData": "https://api.weather.gov/gridpoints/RAH/28,16",
+      "observationStations": "https://api.weather.gov/gridpoints/RAH/28,16/stations",
+      "relativeLocation": {
+          "type": "Feature",
+          "geometry": {
+              "type": "Point",
+              "coordinates": [
+                  -79.984533999999996,
+                  34.967494000000002
+              ]
+          },
+          "properties": {
+              "city": "Lilesville",
+              "state": "NC",
+              "distance": {
+                  "value": 3879.4297544412002,
+                  "unitCode": "unit:m"
+              },
+              "bearing": {
+                  "value": 338,
+                  "unitCode": "unit:degrees_true"
+              }
+          }
+      },
+      "forecastZone": "https://api.weather.gov/zones/forecast/NCZ083",
+      "county": "https://api.weather.gov/zones/county/NCC007",
+      "fireWeatherZone": "https://api.weather.gov/zones/fire/NCZ083",
+      "timeZone": "America/New_York",
+      "radarStation": "KCAE"
+  }
+}

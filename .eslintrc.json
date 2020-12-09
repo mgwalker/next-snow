@@ -9,5 +9,16 @@
   },
   "globals":{
     "Vue": "readonly"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["tests/**/*.js"],
+      "env": {
+        "cypress/globals": true
+      },
+      "plugins": [
+        "cypress"
+      ]
+    }
+  ]
 }

@@ -6,10 +6,13 @@
   "dependencies": {},
   "devDependencies": {
     "@18f/18f-eslint": "^1.2.5",
+    "cypress": "^6.1.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "npx @18f/18f-eslint 'docs/**/*.js' 'tests/**/*.js'",
+    "test": "npx http-server docs &> /dev/null & export TEST_SERVER=$! && cypress run && kill $TEST_SERVER"
   },
   "author": "",
   "license": "ISC",
