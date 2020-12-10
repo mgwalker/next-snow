@@ -8,6 +8,14 @@ const appState = {
   zipEntered: () => {},
 };
 
+const error = () => {
+  appState.day = null;
+  appState.forecast = "Something went wrong. 😢 Going to try again...";
+  appState.loading = false;
+
+  setTimeout(getLocation, 5000); // eslint-disable-line no-use-before-define
+};
+
 const getNextSnow = async (forecasts) => {
   const snows = forecasts.filter(({ forecast }) =>
     forecast.toLowerCase().includes("snow")
@@ -20,6 +28,10 @@ const getNextSnow = async (forecasts) => {
 
 const getForecast = async (url) => {
   const response = await fetch(url);
+  if (response.status !== 200) {
+    throw new Error();
+  }
+
   const json = await response.json();
   return json.properties.periods.map(({ detailedForecast, name }) => ({
     name,
@@ -30,6 +42,10 @@ const getForecast = async (url) => {
 const getForecastURL = async (latitude, longitude) => {
   const url = `https://api.weather.gov/points/${latitude},${longitude}`;
   const response = await fetch(url);
+  if (response.status !== 200) {
+    throw new Error();
+  }
+
   const json = await response.json();
   return json.properties.forecast;
 };
@@ -86,25 +102,29 @@ const makeItSnow = () => {
 };
 
 const updateDOMWithLocation = async (latitude, longitude) => {
-  const nextSnow = await getForecastURL(latitude, longitude)
-    .then(getForecast)
-    .then(getNextSnow);
+  try {
+    const nextSnow = await getForecastURL(latitude, longitude)
+      .then(getForecast)
+      .then(getNextSnow);
 
-  appState.loading = false;
+    appState.loading = false;
 
-  if (nextSnow !== false) {
-    const { name, forecast } = nextSnow;
-    if (name.toLowerCase().includes("night")) {
-      document.body.setAttribute("class", "night");
+    if (nextSnow !== false) {
+      const { name, forecast } = nextSnow;
+      if (name.toLowerCase().includes("night")) {
+        document.body.setAttribute("class", "night");
+      } else {
+        document.body.setAttribute("class", "day");
+      }
+
+      appState.day = name;
+      appState.forecast = forecast;
+      makeItSnow();
     } else {
-      document.body.setAttribute("class", "day");
+      appState.day = "No snow in the forecast 😢";
     }
-
-    appState.day = name;
-    appState.forecast = forecast;
-    makeItSnow();
-  } else {
-    appState.day = "No snow in the forecast 😢";
+  } catch (e) {
+    error();
   }
 };
 
@@ -116,9 +136,11 @@ const getLocation = () => {
 
   g.getCurrentPosition(
     async ({ coords: { latitude, longitude } }) => {
+      console.log("inside success callback");
       updateDOMWithLocation(latitude, longitude);
     },
     ({ code }) => {
+      console.log("inside error callback");
       appState.loading = false;
       appState.day = "";
       appState.forecast = "";

@@ -15,6 +15,29 @@ const intercept = (time) => {
 };
 
 describe("when the user allows geospatial location", () => {
+  it("with an error fetching the forecast URL", () => {
+    cy.intercept("GET", "https://api.weather.gov/points/35,-80", {
+      statusCode: 500,
+      body: {},
+    });
+    cy.visit("/", { onBeforeLoad });
+
+    cy.contains("Something went wrong. 😢 Going to try again...");
+  });
+
+  it("with an error fetching the forecast", () => {
+    cy.intercept("GET", "https://api.weather.gov/points/35,-80", {
+      fixture: `get_url_success.json`,
+    });
+    cy.intercept("GET", "https://forecast.url", {
+      statusCode: 500,
+      body: {},
+    });
+    cy.visit("/", { onBeforeLoad });
+
+    cy.contains("Something went wrong. 😢 Going to try again...");
+  });
+
   it("with no snow in the forecast", () => {
     intercept("none");
     cy.visit("/", { onBeforeLoad });
