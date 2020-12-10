@@ -1,0 +1,15 @@
+name: tests
+
+on: [push]
+
+jobs:
+  build:
+    name: end-to-end tests
+    runs-on: ubuntu-latest
+    container: cypress/base
+    steps:
+      - uses: actions/checkout@af513c7a
+      - name: start the web server
+        run: npx http-server docs &
+      - name: run tests
+        run: npx cypress run
