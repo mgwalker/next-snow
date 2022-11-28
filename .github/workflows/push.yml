@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     container: cypress/base
     steps:
-      - uses: actions/checkout@af513c7a
+      - uses: actions/checkout@v2.5.0
       - name: start the web server
         run: npx http-server docs &
       - name: run tests
